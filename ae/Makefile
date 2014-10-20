@@ -1,2 +1,2 @@
-server:
-	g++ -o server main.cpp ae.c anet.c ae_select.c 
+demo1:
+	gcc -o demo1 demo1.c zmalloc.c ae.c ae_epoll.c 
