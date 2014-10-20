@@ -60,41 +60,41 @@ typedef void aeBeforeSleepProc(struct aeEventLoop *eventLoop);
 
 /* File event structure */
 typedef struct aeFileEvent {
-    int mask; /* one of AE_(READABLE|WRITABLE) */
-    aeFileProc *rfileProc;
-    aeFileProc *wfileProc;
-    void *clientData;
+    int         mask; /* one of AE_(READABLE|WRITABLE) */
+    aeFileProc* rfileProc;
+    aeFileProc* wfileProc;
+    void*       clientData;
 } aeFileEvent;
 
 /* Time event structure */
 typedef struct aeTimeEvent {
-    long long id; /* time event identifier. */
-    long when_sec; /* seconds */
-    long when_ms; /* milliseconds */
-    aeTimeProc *timeProc;
-    aeEventFinalizerProc *finalizerProc;
-    void *clientData;
-    struct aeTimeEvent *next;
+    long long   id; /* time event identifier. */
+    long        when_sec; /* seconds */
+    long        when_ms; /* milliseconds */
+    aeTimeProc*             timeProc;
+    aeEventFinalizerProc*   finalizerProc;
+    void*                   clientData;
+    struct aeTimeEvent*     next;
 } aeTimeEvent;
 
 /* A fired event */
 typedef struct aeFiredEvent {
-    int fd;
-    int mask;
+    int     fd;
+    int     mask;
 } aeFiredEvent;
 
 /* State of an event based program */
 typedef struct aeEventLoop {
-    int maxfd;   /* highest file descriptor currently registered */
-    int setsize; /* max number of file descriptors tracked */
-    long long timeEventNextId;
-    time_t lastTime;     /* Used to detect system clock skew */
-    aeFileEvent *events; /* Registered events */
-    aeFiredEvent *fired; /* Fired events */
-    aeTimeEvent *timeEventHead;
-    int stop;
-    void *apidata; /* This is used for polling API specific data */
-    aeBeforeSleepProc *beforesleep;
+    int     maxfd;   /* highest file descriptor currently registered */
+    int     setsize; /* max number of file descriptors tracked */
+    long long       timeEventNextId;
+    time_t          lastTime;   /* Used to detect system clock skew */
+    aeFileEvent*    events;     /* Registered events */
+    aeFiredEvent*   fired;      /* Fired events */
+    aeTimeEvent*    timeEventHead;
+    int         stop;
+    void *      apidata; /* This is used for polling API specific data */
+    aeBeforeSleepProc*  beforesleep;
 } aeEventLoop;
 
 /* Prototypes */
