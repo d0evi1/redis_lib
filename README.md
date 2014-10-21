@@ -5,4 +5,4 @@ ae lib from redis.
 just a event-framework demo.
 
 ## demo2:
-a tcp framework demo.
+a tcp framework demo. (use redis anet lib.)
