@@ -28,8 +28,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
+#include <unistd.h>
 #include <string.h>
+
+
+#include "ae.h"
+#include "zmalloc.h"
+
+
 
 typedef struct aeApiState {
     fd_set rfds, wfds;

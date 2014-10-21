@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
+#include <unistd.h>
 #include <assert.h>
 #include <errno.h>
 #include <port.h>
@@ -37,6 +37,11 @@
 #include <sys/time.h>
 
 #include <stdio.h>
+
+#include "ae.h"
+#include "zmalloc.h"
+
+
 
 static int evport_debug = 0;
 
