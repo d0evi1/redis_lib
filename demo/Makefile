@@ -1,14 +1,53 @@
-bin: demo1 demo2 demo3
+VPATH=../ae
 
 
-demo1:
-	gcc -g -Wall -o demo1 demo1_timer.c zmalloc.c ae.c ae_select.c #ae_epoll.c
+AE_INC=-I../ae 
+AE_LIB=
 
-demo2:
-	gcc -g -Wall -o demo2 demo2_tcpserver.c zmalloc.c ae.c ae_select.c anet.c #ae_epoll.c
+ALL_INC = $(AE_INC)
+ALL_LIB = $(AE_LIB)
 
-demo3:
-	gcc -g -Wall -o demo3 demo3_udpserver.c zmalloc.c ae.c ae_select.c
+
+all: demo1 demo2 demo3 
+
+
+#-----------------------------------------------
+# -g(-ggdb):生成调试信息
+# -Wall: 警告信息
+#-----------------------------------------------
+CFLAGS = -g -Wall
+
+
+#-------------------------------------------------
+#定义make识别后缀
+#-------------------------------------------------
+.SUFFIXES: .c .cpp .o .h
+
+#-------------------------------------------------
+# 双后缀规则
+# 自动化变量: $@ -- 所有的.o目标集
+# 自动化变量：$< -- 所有的.c依赖目标集
+#-------------------------------------------------
+.c.o:
+	$(CC) -c $(CFLAGS) -o $@ $^ $(ALL_INC) $(ALL_LIB)
+.cpp.o:
+	$(CXX) -c $(CFLAGS) -o $@ $^ $(ALL_INC) $(ALL_LIB)
+
+
+
+demo1: demo1_timer.o zmalloc.o ae.o ae_select.o
+	$(CXX) $(CFLAGS) -o $@ $^ $(ALL_INC) $(ALL_LIB)		
+	
+
+demo2: demo2_tcpserver.o zmalloc.o ae.o ae_select.o anet.o 
+	$(CXX) $(CFLAGS) -o $@ $^ $(ALL_INC) $(ALL_LIB)		
+	
+
+demo3: demo3_udpserver.o zmalloc.o ae.o ae_select.o
+	$(CXX) $(CFLAGS) -o $@ $^ $(ALL_INC) $(ALL_LIB)		
+	
+
+.PHONY: clean
 
 clean:
-	rm demo1 demo2 demo3; rm -rf *.dSYM 
+	@rm demo1 demo2 demo3; rm -rf *.o 
