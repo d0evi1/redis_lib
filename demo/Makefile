@@ -8,7 +8,7 @@ ALL_INC = $(AE_INC)
 ALL_LIB = $(AE_LIB)
 
 
-all: demo1 demo2 demo3 
+all: demo1 demo2 demo3 demo4 
 
 
 #-----------------------------------------------
@@ -46,8 +46,12 @@ demo2: demo2_tcpserver.o zmalloc.o ae.o ae_select.o anet.o
 demo3: demo3_udpserver.o zmalloc.o ae.o ae_select.o
 	$(CXX) $(CFLAGS) -o $@ $^ $(ALL_INC) $(ALL_LIB)		
 	
+demo4: demo4_zmalloc.o zmalloc.o 
+	$(CXX) $(CFLAGS) -DHAVE_MALLOC_SIZE -o $@ $^ $(ALL_INC) $(ALL_LIB)		
+	
+
 
 .PHONY: clean
 
 clean:
-	@rm demo1 demo2 demo3; rm -rf *.o 
+	@rm demo1 demo2 demo3 demo4; rm -rf *.o 
