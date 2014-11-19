@@ -1,14 +1,19 @@
-VPATH=../ae
+VPATH=../ae ../comm ../hash
 
+COMM_INC=-I../comm
+COMM_LIB=
+
+HASH_INC=-I../hash
+HASH_LIB=
 
 AE_INC=-I../ae 
 AE_LIB=
 
-ALL_INC = $(AE_INC)
-ALL_LIB = $(AE_LIB)
+ALL_INC = $(AE_INC) $(COMM_INC) $(HASH_INC)
+ALL_LIB = $(AE_LIB) $(COMM_LIB) $(HASH_LIB)
 
 
-all: demo1 demo2 demo3 demo4 
+all: demo1 demo2 demo3 demo4 demo5 
 
 
 #-----------------------------------------------
@@ -49,9 +54,10 @@ demo3: demo3_udpserver.o zmalloc.o ae.o ae_select.o
 demo4: demo4_zmalloc.o zmalloc.o 
 	$(CXX) $(CFLAGS) -DHAVE_MALLOC_SIZE -o $@ $^ $(ALL_INC) $(ALL_LIB)		
 	
-
-
+demo5: demo5_dict.o dict.o zmalloc.o redisassert.o
+	$(CXX) $(CFLAGS) -o $@ $^ $(ALL_INC) $(ALL_LIB)		
+	
 .PHONY: clean
 
 clean:
-	@rm demo1 demo2 demo3 demo4; rm -rf *.o 
+	@rm demo1 demo2 demo3 demo4 demo5; rm -rf *.o 
