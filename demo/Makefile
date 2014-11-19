@@ -1,16 +1,16 @@
-VPATH=../ae ../comm ../hash
+VPATH=../ae ../comm ../dict
 
 COMM_INC=-I../comm
 COMM_LIB=
 
-HASH_INC=-I../hash
-HASH_LIB=
+DICT_INC=-I../dict
+DICT_LIB=
 
 AE_INC=-I../ae 
 AE_LIB=
 
-ALL_INC = $(AE_INC) $(COMM_INC) $(HASH_INC)
-ALL_LIB = $(AE_LIB) $(COMM_LIB) $(HASH_LIB)
+ALL_INC = $(AE_INC) $(COMM_INC) $(DICT_INC)
+ALL_LIB = $(AE_LIB) $(COMM_LIB) $(DICT_LIB)
 
 
 all: demo1 demo2 demo3 demo4 demo5 

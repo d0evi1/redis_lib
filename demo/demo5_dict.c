@@ -41,11 +41,14 @@ void myDestructor(void* privdata, void* val) {
     printf("desctruct: val:%s\n", (char*)val);
 }
 
-
+/*
+ * scan func.
+ */
 void printState(dict* d)
 {
-    printf("rehashindex=%d, [0] size=%d, used=%d [1] size=%d, used=%d \n", 
-            d->rehashidx, d->ht[0].size, d->ht[0].used,
+    printf("rehashindex=%d, iterators=%d, [0] size=%d, used=%d [1] size=%d, used=%d \n", 
+            d->rehashidx, d->iterators,
+            d->ht[0].size, d->ht[0].used,
             d->ht[1].size, d->ht[1].used);
 }
 
@@ -116,6 +119,26 @@ int main()
 
     printf("add 6\n");
     ret = dictAdd(myDict, "hello6", "h6");
+    printState(myDict);
+    assert(ret==0);
+
+    printf("add 7\n");
+    ret = dictAdd(myDict, "hello7", "h7");
+    printState(myDict);
+    assert(ret==0);
+
+    printf("add 8\n");
+    ret = dictAdd(myDict, "hello8", "h8");
+    printState(myDict);
+    assert(ret==0);
+
+    printf("add 9\n");
+    ret = dictAdd(myDict, "hello9", "h9");
+    printState(myDict);
+    assert(ret==0);
+
+    printf("add 10\n");
+    ret = dictAdd(myDict, "hello10", "h10");
     printState(myDict);
     assert(ret==0);
 
