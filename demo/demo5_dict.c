@@ -30,7 +30,7 @@ int myCompare(void *privdata, const void *key1,
  */
 unsigned int myHash(const void *key) {
     unsigned int ret = dictGenHashFunction(key, strlen((char*)key));
-    printf("key = %u\n", ret);
+    //printf("hash key = %u\n", ret);
     return ret;
 }
 
@@ -52,7 +52,17 @@ void printState(dict* d)
             d->ht[1].size, d->ht[1].used);
 }
 
+/*
+ *
+ */
+void dictScanCallback(void* privdata, const dictEntry* de)
+{
+    printf("[scan] key=%s, val = %s\n", de->key, de->v.val);
+}
 
+/*
+ * main function.
+ */
 int main()
 {
     struct timeval tv;
@@ -85,69 +95,44 @@ int main()
     printf("-------------------\n");
     printState(myDict);
 
-    char* key1 = "hello";
-    char* key2 = "hello2";
-    char* key3 = "hello3";
+    char* key[10] = {"hello0", "hello1", "hello2", "hello3", "hello4", 
+                "hello5", "hello6", "hello7", "hello8", "hello9"};
 
+    char* val[10] = {"h0", "h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8", "h9"};
 
     // step 2: add
-    printf("add 1\n");
-    int ret = dictAdd(myDict, key1, "h1");
-    printState(myDict);
-    assert(ret==0);
+    for(int i = 0; i<10; i++)
+    {
+        printf("add %d\n", i);
+        int ret = dictAdd(myDict, key[i], val[i]);
+        printState(myDict);
+        assert(ret==0);
+    }
 
-    printf("add 2\n");
-    ret = dictAdd(myDict, key2, "h2");
-    printState(myDict);
-    assert(ret==0); 
+    // index.
+    printf("------------index---------------\n");
+    for(int i = 0; i < 10; i++)
+    {
+        printf("i=%d\n", i);
+        char* v = dictFetchValue(myDict, key[i]);
+        int ret = strcmp(v, val[i]); 
+        assert(ret == 0);
+    }
 
-  
-    printf("add 3\n");
-    ret = dictAdd(myDict, key3, "h3");
-    printState(myDict);
-    assert(ret==0);
+    char* v = dictFetchValue(myDict, "hello world2");
+    assert(v == NULL);
+    
 
-    printf("add 4\n");
-    ret = dictAdd(myDict, "hello4", "h4");
-    printState(myDict);
-    assert(ret==0);
-
-    printf("add 5\n");
-    ret = dictAdd(myDict, "hello5", "h5");
-    printState(myDict);
-    assert(ret==0);
-
-    printf("add 6\n");
-    ret = dictAdd(myDict, "hello6", "h6");
-    printState(myDict);
-    assert(ret==0);
-
-    printf("add 7\n");
-    ret = dictAdd(myDict, "hello7", "h7");
-    printState(myDict);
-    assert(ret==0);
-
-    printf("add 8\n");
-    ret = dictAdd(myDict, "hello8", "h8");
-    printState(myDict);
-    assert(ret==0);
-
-    printf("add 9\n");
-    ret = dictAdd(myDict, "hello9", "h9");
-    printState(myDict);
-    assert(ret==0);
-
-    printf("add 10\n");
-    ret = dictAdd(myDict, "hello10", "h10");
-    printState(myDict);
-    assert(ret==0);
-
-
-
-
-    // step 3: index.
-
-    // step 4: search / foreach.
+    // foreach dict.
+    unsigned long cur = 0;
+    while(1) 
+    {
+        cur = dictScan(myDict, cur, dictScanCallback, NULL); 
+        if(cur == 0)
+        {
+            break;
+        }
+    }
 
     // release. 
     dictRelease(myDict);
