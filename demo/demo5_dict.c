@@ -71,10 +71,12 @@ int main()
     gettimeofday(&tv,NULL);
 
 
-    // rand seed.
+    // rand seed or fixed seed.
     unsigned int mod = tv.tv_sec^tv.tv_usec^getpid(); 
     printf("%u\n", mod);
-    dictSetHashFunctionSeed(mod);
+    //dictSetHashFunctionSeed(mod);
+    dictSetHashFunctionSeed(12391);
+
 
 
     // create <k,v> = <str, str>.
@@ -100,14 +102,44 @@ int main()
 
     char* val[10] = {"h0", "h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8", "h9"};
 
+
+    for(int i=0; i<10; i++)
+    {
+        unsigned int hash = myHash(key[i]);
+        unsigned int idx = hash & 3;
+        printf("real key: %u, real idx=%d\n", hash, idx);
+    }
+
+
+
     // step 2: add
-    for(int i = 0; i<10; i++)
+    printf("----------add first 5-----------------\n");
+    for(int i = 0; i<5; i++)
     {
         printf("add %d\n", i);
         int ret = dictAdd(myDict, key[i], val[i]);
         printState(myDict);
         assert(ret==0);
     }
+
+    printf("----------start rehashing..------------\n");
+    for(int i=0; i<5; i++)
+    {
+        dictRehash(myDict, 1);
+        printState(myDict);
+    }
+
+    printf("----------add  last 5.-----------------\n");
+    for(int i = 5; i<10; i++)
+    {
+        printf("add %d\n", i);
+        int ret = dictAdd(myDict, key[i], val[i]);
+        printState(myDict);
+        assert(ret==0);
+    }
+
+
+
 
     // index.
     printf("------------index---------------\n");
