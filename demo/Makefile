@@ -1,4 +1,4 @@
-VPATH=../ae ../comm ../dict
+VPATH=../ae ../comm ../dict ../sds ../list
 
 COMM_INC=-I../comm
 COMM_LIB=
@@ -6,14 +6,21 @@ COMM_LIB=
 DICT_INC=-I../dict
 DICT_LIB=
 
+SDS_INC=-I../sds
+SDS_LIB=
+
+ADLIST_INC=-I../list
+ADLIST_LIB=
+
+
 AE_INC=-I../ae 
 AE_LIB=
 
-ALL_INC = $(AE_INC) $(COMM_INC) $(DICT_INC)
-ALL_LIB = $(AE_LIB) $(COMM_LIB) $(DICT_LIB)
+ALL_INC = $(AE_INC) $(COMM_INC) $(DICT_INC) $(SDS_INC) $(ADLIST_INC)
+ALL_LIB = $(AE_LIB) $(COMM_LIB) $(DICT_LIB) $(SDS_LIB) $(ADLIST_LIB)
 
 
-all: demo1 demo2 demo3 demo4 demo5 
+all: demo1 demo2 demo3 demo4 demo5 demo6 demo7 
 
 
 #-----------------------------------------------
@@ -56,8 +63,19 @@ demo4: demo4_zmalloc.o zmalloc.o
 	
 demo5: demo5_dict.o dict.o zmalloc.o redisassert.o
 	$(CXX) $(CFLAGS) -o $@ $^ $(ALL_INC) $(ALL_LIB)		
+
+
+demo6: demo6_sds.o sds.o zmalloc.o redisassert.o
+	$(CXX) $(CFLAGS) -o $@ $^ $(ALL_INC) $(ALL_LIB)		
 	
+
+demo7: demo7_adlist.o adlist.o zmalloc.o redisassert.o
+	$(CXX) $(CFLAGS) -o $@ $^ $(ALL_INC) $(ALL_LIB)		
+	
+
+
+
 .PHONY: clean
 
 clean:
-	@rm demo1 demo2 demo3 demo4 demo5; rm -rf *.o 
+	@rm demo1 demo2 demo3 demo4 demo5 demo6 demo7; rm -rf *.o 
