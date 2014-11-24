@@ -1,4 +1,4 @@
-VPATH=../ae ../comm ../dict ../sds ../list
+VPATH=../ae ../comm ../dict ../sds ../list ../ziplist
 
 COMM_INC=-I../comm
 COMM_LIB=
@@ -12,15 +12,18 @@ SDS_LIB=
 ADLIST_INC=-I../list
 ADLIST_LIB=
 
+ZIPLIST_INC=-I../ziplist
+ZIPLIST_LIB=
+
 
 AE_INC=-I../ae 
 AE_LIB=
 
-ALL_INC = $(AE_INC) $(COMM_INC) $(DICT_INC) $(SDS_INC) $(ADLIST_INC)
-ALL_LIB = $(AE_LIB) $(COMM_LIB) $(DICT_LIB) $(SDS_LIB) $(ADLIST_LIB)
+ALL_INC = $(AE_INC) $(COMM_INC) $(DICT_INC) $(SDS_INC) $(ADLIST_INC) $(ZIPLIST_INC)
+ALL_LIB = $(AE_LIB) $(COMM_LIB) $(DICT_LIB) $(SDS_LIB) $(ADLIST_LIB) $(ZIPLIST_lIB)
 
 
-all: demo1 demo2 demo3 demo4 demo5 demo6 demo7 
+all: demo1 demo2 demo3 demo4 demo5 demo6 demo7 demo8 demo9 
 
 
 #-----------------------------------------------
@@ -72,10 +75,15 @@ demo6: demo6_sds.o sds.o zmalloc.o redisassert.o
 demo7: demo7_adlist.o adlist.o zmalloc.o redisassert.o
 	$(CXX) $(CFLAGS) -o $@ $^ $(ALL_INC) $(ALL_LIB)		
 	
-
+demo8: demo8_ziplist.o ziplist.o sds.o adlist.o util.o endianconv.o zmalloc.o redisassert.o
+	$(CXX) $(CFLAGS) -o $@ $^ $(ALL_INC) $(ALL_LIB)		
+	
+demo9: demo9_endian.o endianconv.o
+	$(CXX) $(CFLAGS) -o $@ $^ $(ALL_INC) $(ALL_LIB)		
+	
 
 
 .PHONY: clean
 
 clean:
-	@rm demo1 demo2 demo3 demo4 demo5 demo6 demo7; rm -rf *.o 
+	@rm demo1 demo2 demo3 demo4 demo5 demo6 demo7 demo8 demo9; rm -rf *.o 
